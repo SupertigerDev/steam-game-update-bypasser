@@ -1,0 +1,17 @@
+{
+  "name": "steam-game-update-bypasser",
+  "version": "1.0.0",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "electron": "^35.1.5",
+    "steam-acf2json": "^0.1.1"
+  }
+}
