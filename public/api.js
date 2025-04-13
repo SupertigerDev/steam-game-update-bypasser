@@ -2,6 +2,7 @@
  * @typedef {{
  *   path: string
  *   raw: string
+ *   hasBackup: boolean
  *   parsed: object
  * }} Manifest
  */
@@ -22,9 +23,27 @@ export const openFolderDialog = async () => {
  * @param {string} path
  * @returns {Promise<Manifest[]>}
  */
-export const retriveManifests = async (path) => {
+export const retrieveManifests = async (path) => {
   return electronAPI.invoke({
-    type: "retriveManifests",
+    type: "retrieveManifests",
     path,
   });
 };
+
+
+
+export const processRequest = async (manifestData) => {
+  return electronAPI.send({
+    type: "processRequest",
+    manifestData,
+  });
+};
+export const revertRequest = async (path) => {
+  return electronAPI.invoke({
+    type: "revertRequest",
+    path
+  });
+};
+
+
+export const on = (opts) => electronAPI.on(opts);

@@ -1,5 +1,6 @@
 
 body, html {
+  overflow: hidden;
   width: 100%;
   height: 100%;
   padding: 0;
@@ -7,7 +8,6 @@ body, html {
   color: white;
   background-color: black;
   font-family: Arial, Helvetica, sans-serif;
-
 }
 
 * {
@@ -45,11 +45,16 @@ body, html {
   }
 }
 
-#manifestList {
+.manifestListContainer {
   display: flex;
   overflow: auto;
   flex-direction: column;
-  padding-top: 8px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+#manifestList {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 .manifest-item {
@@ -72,7 +77,87 @@ body, html {
   }
   .details {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    width: 100%;
+    margin-right: 6px;
+    .revert {
+      margin-right: 12px;
+      margin-left: auto;
+      opacity: 0.6;
+    }
+  }
+}
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: rgb(218, 218, 218);
+
+}
+
+
+#dialog {
+  position: absolute;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  .manifest-item {
+    pointer-events: none;
+  }
+  #content {
+    padding: 6px;
+    border: solid 1px rgba(255, 255, 255, 0.6);
+    border-radius: 4px;
+    background-color: rgb(0, 0, 0);
+  }
+
+  .title {
+    margin-bottom: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    span {
+      opacity: 0.6;
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+  .warn {
+    margin-top: 6px;
+    color: rgb(255, 68, 68);
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .buttons {
+    display: flex;
+    margin-top: 6px;
+    gap: 6px;
+    button {
+      flex: 1;
+      padding: 6px;
+      border: none;
+      border: solid 1px transparent;
+      border-radius: 4px;
+      color: white;
+      background-color: rgb(34, 34, 34);
+      &:hover {
+        border: solid 1px rgba(255, 255, 255, 0.6);
+        background-color: rgb(50, 50, 50);
+      }
+      &.alert {
+        background-color: rgb(255, 72, 72);
+        &:hover {
+          background-color: rgb(209, 86, 86);
+        }
+      }
+    }
   }
 }
