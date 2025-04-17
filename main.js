@@ -100,6 +100,9 @@ app.whenReady().then(() => {
           const depot = updates.depots[depotKey];
           const gid = depot.gid;
           const size = depot.size;
+          if (gid === undefined || size === undefined) {
+            continue;
+          }
           parsed.AppState.InstalledDepots[depotKey] = {};
           parsed.AppState.InstalledDepots[depotKey].manifest = gid;
           parsed.AppState.InstalledDepots[depotKey].size = size;
@@ -153,28 +156,49 @@ const fetchUpdates = async (appId) => {
   let s_buildId = null
   let s_depots = {}
   document.querySelectorAll('.tab-pane#history .app-history')?.forEach(e=> {
-      const buildIdEl = [...e.querySelectorAll("i")].find(l => l.innerText.startsWith("buildid:"))
-      
-      const newBuildId = buildIdEl?.parentElement.getElementsByClassName("ins")[0]?.innerText;
-  
-      if (!s_buildId && newBuildId) {
-          s_buildId = newBuildId.replace(" ", "");
-      }
-  
-      const deportLabelEls = [...e.querySelectorAll("i")].filter(l => l.innerText.startsWith("Depot "))
-      deportLabelEls.forEach((e) => {
-          const id = e.getElementsByClassName("history-link")[0].innerText;
-          const newSize = e.innerText.endsWith("size:") ? e.parentElement.getElementsByTagName("ins")[0]?.innerText : undefined;
-          const gid =  e.innerText.endsWith("gid:") ? e.parentElement.getElementsByClassName("ins")[0]?.innerText : undefined;
-          let currentDepot = s_depots[id] || {};
-          if (!currentDepot.size && newSize) {
-              currentDepot.size = newSize;
+      const branchEls = [...e.querySelectorAll('.branch-name')].filter(e => e.innerText === "public");
+      branchEls.forEach(branchEl => {
+          const parentEl = branchEl.parentElement;
+          const children = parentEl.children;
+          const text = children[1].innerText;
+
+          if (text.startsWith("buildid") && !s_buildId) {
+              s_buildId = children[3].innerText.replace(" ", "")
           }
-          if (!currentDepot.gid && gid) {
-              currentDepot.gid = gid.replace(" ", "");
+
+          if (text.startsWith("Depot ")) {
+              const depotId = children[1]?.children?.[0]?.innerText;
+              let currentDepot = s_depots[depotId] || {};
+
+
+              if (text.endsWith("gid:")){
+
+                  const muted = children[4]?.innerText;
+                  if (muted && (muted !== "[Windows]" && muted !== "[Windows, English]")  ) return;
+                  const gid = children[3].innerText.replace(" ", "")
+                  
+                   if (!currentDepot.gid && gid) {
+                         currentDepot.gid = gid;
+                       s_depots[depotId] = currentDepot
+                   }
+                  
+              }
+              if (text.endsWith("size:")) {
+                  
+                  const size = children[4].innerText
+                  if (!currentDepot.size && size) {
+                      currentDepot.size = size;
+                      s_depots[depotId] = currentDepot
+                  }
+              }
           }
-          s_depots[id] = currentDepot
+          
+          
+
       })
+      
+
+
   })
       return {
           depots: s_depots,
