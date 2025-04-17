@@ -111,6 +111,7 @@ app.whenReady().then(() => {
 
       try {
         const encoded = acfParser.encode(parsed);
+        await fs.chmod(path, 0o644);
         await fs.writeFile(path, encoded);
         // read only
         await fs.chmod(path, 0o444);

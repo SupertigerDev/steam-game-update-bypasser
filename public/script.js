@@ -20,7 +20,8 @@ const updateManifestList = () => {
       <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${manifest.parsed.AppState.appid}/header.jpg"></img>
       <div class="details">
         <div>${manifest.parsed.AppState.name}</div>
-        <div class="revert">${manifest.hasBackup ? "Click To Revert" : ""}</div>
+        ${manifest.hasBackup ? `<div class="revert">Click To Revert</div>` : ""}
+        
       </div>
     </div>`;
   });
@@ -57,11 +58,13 @@ manifestListElement.addEventListener("click", (e) => {
   const item = e.target.closest(".manifest-item");
   if (item) {
     const manifestId = item.id.split("-")[1];
-    const manifest = manifests.find((m) => m.parsed.AppState.appid === manifestId);
-    if (manifest.hasBackup) {
+
+    if (e.target.closest(".revert")) {
       showRevertConfirmDialog(manifestId);
       return;
     }
+
+
     showConfirmDialog(manifestId);
   }
 })
