@@ -1,6 +1,6 @@
 {
   "name": "steam-game-update-bypasser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "main.js",
   "type": "module",
   "scripts": {
