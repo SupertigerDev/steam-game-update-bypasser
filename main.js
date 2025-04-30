@@ -139,7 +139,6 @@ const fetchUpdates = async (appId) => {
     width: 800,
     height: 600,
     autoHideMenuBar: true,
-    show: false,
     webPreferences: {
       webSecurity: true,
       preload: path.join(__dirname, "preload.js"),
